@@ -1,0 +1,12 @@
+{
+  "name": "node-domain-availability",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josephjaniga/Node-Domain-Availability.git"
+  },
+  "dependencies": {
+    "hostbyname": "^0.1.0",
+    "q": "^1.4.1"
+  }
+}
