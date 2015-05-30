@@ -1,4 +1,4 @@
-describe('getDiv', function() {
+describe('Get Div Suite: ', function() {
     var d = document.querySelector('.box');
 
     it('Should exist', function() {
