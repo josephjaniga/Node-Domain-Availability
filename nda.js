@@ -454,5 +454,5 @@ function DomainAvailability() {
 }
 
 // sample implementation
-var DA = new DomainAvailability();
-DA.isAvailable("google.com").then(DA.resolve, DA.reject);
+//var DA = new DomainAvailability();
+//DA.isAvailable("google.com").then(DA.resolve, DA.reject);
