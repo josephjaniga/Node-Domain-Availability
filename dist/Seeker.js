@@ -1,3 +1,9 @@
+// TLDS text file on the web updated daily
+// http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+
+// registry list
+// https://www.icann.org/resources/pages/listing-2012-02-25-en
+
 "use strict";
 
 // ECMAScript 6 Polyfill Includes
@@ -6,12 +12,6 @@ if (!String.prototype.includes) {
         return String.prototype.indexOf.apply(this, arguments) !== -1;
     };
 }
-
-// TLDS text file on the web updated daily
-// http://data.iana.org/TLD/tlds-alpha-by-domain.txt
-
-// registry list
-// https://www.icann.org/resources/pages/listing-2012-02-25-en
 
 var hostbyname  = require("hostbyname"),    // npm hostbyname
     socket      = require('net').Socket(),  // build in node
@@ -25,7 +25,7 @@ var cb = function(err, results){
     //}
 };
 
-function DomainAvailability() {
+module.exports = function Seeker() {
 
     this.whoIsData = {
         "com"           : ["whois.verisign-grs.com", "No match for "],
@@ -397,7 +397,7 @@ function DomainAvailability() {
                 var whoIsServer = this.whoIsData[tld][0],
                     notFoundString = this.whoIsData[tld][1]; // NOT FOUND IS GOOD :D
             } else {
-                throw "TLD WHOIS Server not found";W
+                throw "TLD WHOIS Server not found";
             }
 
             // http://tools.ietf.org/html/rfc3912
@@ -430,18 +430,15 @@ function DomainAvailability() {
     this.resolve = function(responseArray){
         var response = responseArray[0],
             notFoundString = responseArray[1];
-            //console.log({ r: response, s: notFoundString, v: response.indexOf(notFoundString)  });
         if ( !response.includes(notFoundString) ){
-            console.log('D: not available');
             return false;
         } else {
-            console.log('<3 AVAILABLE!')
-/* NOT FOUND MEANS: _ _       _     _      _
-...../\            (_) |     | |   | |    | |
-..../  \__   ____ _ _| | __ _| |__ | | ___| |
-.../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
-../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
-./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
+            /* NOT FOUND MEANS: _ _       _     _      _
+            ...../\            (_) |     | |   | |    | |
+            ..../  \__   ____ _ _| | __ _| |__ | | ___| |
+            .../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
+            ../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
+            ./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
             return true;
         }
     };
