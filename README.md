@@ -10,9 +10,15 @@ Distribution
  * q
  * hostbyname
 
-Development
+Development / Testing
  * mocha
  * should
  * should-promised
+ * istanbul
 
 A nodejs script / toolbox to make socket requests for whois domain availability.
+
+---
+
+ There is a hard dependency on the "cares_wrap" last available in nodejs v0.10.x
+ Investigate the differences between `updated` functionality available in v0.12.x
