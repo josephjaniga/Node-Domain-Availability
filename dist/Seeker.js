@@ -9,8 +9,6 @@
 
 "use strict";
 
-console.log("make a " + 1e6 + " bro!");
-
 // ECMAScript 6 Polyfill Includes
 if (!String.prototype.includes) {
     String.prototype.includes = function() {'use strict';

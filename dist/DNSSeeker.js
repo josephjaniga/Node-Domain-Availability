@@ -9,8 +9,6 @@
 
 "use strict";
 
-console.log("make a " + 1e6 + " bro!");
-
 // ECMAScript 6 Polyfill Includes
 if (!String.prototype.includes) {
     String.prototype.includes = function() {'use strict';
@@ -30,23 +28,44 @@ module.exports = function DNSSeeker() {
 
     this.checkHostnameResolution = function( string_LowerCaseDomainName ){
         
+        /**
+         * is this domain available?    - available = return true = YES
+         *                              - taken = return false = NO
+         */
+        
         var lookup = {
             "err": null,
             "address": null,
             "family": null  
         };
         
-        dns.lookup(string_LowerCaseDomainName, 4, function(err, address, family){
+        var deferred = q.defer();
+    
+        //dns.lookup(string_LowerCaseDomainName, 4, function(err, address, family){
+        dns.resolve4(string_LowerCaseDomainName, function(err, address){
+            
         	lookup.err = err;
-        	lookup.address = address;
-            lookup.family = family;
+        	//lookup.address = address;
+            // lookup.family = family;
+            
+            console.log("error: " + lookup.err);
+            // console.log("address: " + lookup.address);
+            
+            // if theres an error - no ips mapped = AVAILABLE
+            if ( lookup.err === dns.NOTFOUND ){
+                console.log(string_LowerCaseDomainName + " resolved - available");
+                deferred.resolve();
+            } else {
+                console.log(string_LowerCaseDomainName + " rejected - taken");
+                deferred.reject();
+            }
         });
-        
-        if ( lookup.err !== null && lookup.address !== undefined  ){
-            return true;
-        } else {
-            return false;
-        }
+
+        var available   = function(){ return true; },
+            taken       = function(){ return false; }; 
+
+        return deferred.promise.then(available, taken);
+
     };
 
     this.getTLD = function( string_LowerCaseDomainName ){
