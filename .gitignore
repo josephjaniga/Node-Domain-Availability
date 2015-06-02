@@ -35,8 +35,13 @@ Icon
 .Trashes
 /.project
 
-# Project Files
+# Project Software Files
 # ===========================
 .idea/
 
+# npm workings
 node_modules/*
+npm-debug.log
+
+# istanbul code coverage reports
+coverage/

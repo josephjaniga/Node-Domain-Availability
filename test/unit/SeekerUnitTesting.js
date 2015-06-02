@@ -30,11 +30,11 @@ describe("Seeker - Unit Testing: ", function(){
     });
 
     // resolve
-    it("resolve method - should return false if doesnt find string[1] in string[0]", function(){
+    it("resolve method - substring found / expect true", function(){
         return s.resolve(['hello', 'hell']).should.equal(true);
     });
 
-    it("resolve method - should return true if does find string[1] in string[0]", function(){
+    it("resolve method - substring not found / expect false", function(){
         return s.resolve(['hell', 'new mexico']).should.equal(false);
     });
 
