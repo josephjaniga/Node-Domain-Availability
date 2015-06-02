@@ -9,6 +9,8 @@
 
 "use strict";
 
+console.log("make a " + 1e6 + " bro!");
+
 // ECMAScript 6 Polyfill Includes
 if (!String.prototype.includes) {
     String.prototype.includes = function() {'use strict';
@@ -19,12 +21,10 @@ if (!String.prototype.includes) {
 var hostbyname  = require("hostbyname"),    // npm hostbyname
     socket      = require('net').Socket(),  // build in node
     q           = require('q'),             // npm q
-    whoIsData   = require('./WhoIsData.js');// domain registrars information
-
-var cb = function(err, results){};
+    whoIsData   = require('./WhoIsData.js'),// domain registrars information
+    dns         = require('dns');           // node v0.12.x+ dns library - https://nodejs.org/api/dns.html
 
 module.exports = function Seeker() {
-
     "use strict";
 
     this.whoIsData = whoIsData.registrars;
@@ -105,5 +105,5 @@ module.exports = function Seeker() {
 };
 
 // sample implementation
-//var DA = new DomainAvailability();
-//DA.isAvailable("google.com").then(DA.resolve, DA.reject);
+// var s = new Seeker();
+// s.isAvailable("google.com").then(s.resolve, s.reject);
