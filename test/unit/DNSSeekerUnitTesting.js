@@ -1,4 +1,4 @@
-var Seeker = require('./../../dist/DNSSeeker.js'),
+var DNSSeeker = require('./../../dist/DNSSeeker.js'),
     should = require('should');
 
 describe("DNSSeeker - Unit Testing: ", function(){
@@ -10,7 +10,7 @@ describe("DNSSeeker - Unit Testing: ", function(){
     });
 
     it("Available Domain with node v0.12.x DNS - expect true", function(){
-        return ds.isAvailable("RedHotLizardCaltrops.com").should.eventually.equal(true);
+        return ds.isAvailable("redhot12312312lizardcaltrops.com").should.eventually.equal(true);
     });
 	
 	it("Unavailable Domain with node v0.12.x DNS - expect false", function(){

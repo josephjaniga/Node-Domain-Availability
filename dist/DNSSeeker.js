@@ -18,9 +18,9 @@ if (!String.prototype.includes) {
     };
 }
 
-var hostbyname  = require("hostbyname"),    // npm hostbyname
-    socket      = require('net').Socket(),  // build in node
+var socket      = require('net').Socket(),  // build in node
     q           = require('q'),             // npm q
+    whoIsData   = require('./WhoIsData.js'),// domain registrars information
     dns         = require('dns');           // node v0.12.x+ dns library - https://nodejs.org/api/dns.html
 
 module.exports = function DNSSeeker() {
