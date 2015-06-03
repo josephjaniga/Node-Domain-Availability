@@ -1,6 +1,8 @@
 var Seeker = require('./../../dist/Seeker.js'),
     should = require('should');
 
+process.setMaxListeners(0);
+
 describe("WhoIsData - Registrar Accuracy Tests: ", function(){
 
     /**
