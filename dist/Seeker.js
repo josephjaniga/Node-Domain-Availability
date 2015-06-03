@@ -16,8 +16,7 @@ if (!String.prototype.includes) {
     };
 }
 
-var hostbyname  = require("hostbyname"),    // npm hostbyname
-    socket      = require('net').Socket(),  // build in node
+var socket      = require('net').Socket(),  // build in node
     q           = require('q'),             // npm q
     whoIsData   = require('./WhoIsData.js'),// domain registrars information
     dns         = require('dns');           // node v0.12.x+ dns library - https://nodejs.org/api/dns.html
@@ -28,11 +27,45 @@ module.exports = function Seeker() {
     this.whoIsData = whoIsData.registrars;
 
     this.checkHostnameResolution = function( string_LowerCaseDomainName ){
-        if ( hostbyname.resolve(string_LowerCaseDomainName, "v4", function(){}) !== -1 ){
-            return true;
-        } else {
-            return false;
-        }
+
+        /**
+         * is this domain available?    - available = return true = YES
+         *                              - taken = return false = NO
+         */
+
+        var lookup = {
+            "err": null,
+            "address": null,
+            "family": null
+        };
+
+        var deferred = q.defer();
+
+        //dns.lookup(string_LowerCaseDomainName, 4, function(err, address, family){
+        dns.resolve4(string_LowerCaseDomainName, function(err, address){
+
+            lookup.err = err;
+            //lookup.address = address;
+            // lookup.family = family;
+
+            //console.log("error: " + lookup.err);
+            // console.log("address: " + lookup.address);
+
+            // if theres an error - no ips mapped = AVAILABLE
+            if ( lookup.err === dns.NOTFOUND ){
+                //console.log(string_LowerCaseDomainName + " resolved - available");
+                deferred.resolve();
+            } else {
+                //console.log(string_LowerCaseDomainName + " rejected - taken");
+                deferred.reject();
+            }
+        });
+
+        var available   = function(){ return true; },
+            taken       = function(){ return false; };
+
+        return deferred.promise.then(available, taken);
+
     };
 
     this.getTLD = function( string_LowerCaseDomainName ){
@@ -87,11 +120,11 @@ module.exports = function Seeker() {
             return false;
         } else {
             /* NOT FOUND MEANS: _ _       _     _      _
-            ...../\            (_) |     | |   | |    | |
-            ..../  \__   ____ _ _| | __ _| |__ | | ___| |
-            .../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
-            ../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
-            ./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
+             ...../\            (_) |     | |   | |    | |
+             ..../  \__   ____ _ _| | __ _| |__ | | ___| |
+             .../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
+             ../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
+             ./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
             return true;
         }
     };
@@ -101,7 +134,3 @@ module.exports = function Seeker() {
     };
 
 };
-
-// sample implementation
-// var s = new Seeker();
-// s.isAvailable("google.com").then(s.resolve, s.reject);
