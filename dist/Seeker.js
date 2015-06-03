@@ -21,6 +21,9 @@ var socket      = require('net').Socket(),  // build in node
     whoIsData   = require('./WhoIsData.js'),// domain registrars information
     dns         = require('dns');           // node v0.12.x+ dns library - https://nodejs.org/api/dns.html
 
+// cheesy hack to remove the warning from running too many node tests    
+socket._maxListeners = 0;
+
 module.exports = function Seeker() {
     "use strict";
 
