@@ -6,19 +6,21 @@ describe("Seeker - Single Domain Tests: ", function(done){
     var s = new DNSSeeker();
 
     // negative tests... these domains should not be available
-    it("travis-ci.org availability promise should return false", function(){
+    it("Travis-CI.org availability promise should return false", function(){
         return s.isAvailable("travis-ci.org").should.eventually.equal(false);
     });
     
-    it("usa.gov availability promise should return false", function(){
+    it("USA.gov availability promise should return false", function(){
         return s.isAvailable("usa.gov").should.eventually.equal(false);
     });
     
-    it("Google.com availability promise should return false", function(done){
+    it("Google.com availability promise should return false", function(){
+        this.timeout(5000);
         return s.isAvailable("google.com").should.eventually.equal(false);
     });
 
-    it("Comcast.net availability promise should return false", function(done){
+    it("Comcast.net availability promise should return false", function(){
+        this.timeout(5000);
         return s.isAvailable("comcast.net").should.eventually.equal(false);
     });
 

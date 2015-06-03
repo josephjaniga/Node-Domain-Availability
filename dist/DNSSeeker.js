@@ -48,15 +48,15 @@ module.exports = function DNSSeeker() {
         	//lookup.address = address;
             // lookup.family = family;
             
-            console.log("error: " + lookup.err);
+            //console.log("error: " + lookup.err);
             // console.log("address: " + lookup.address);
             
             // if theres an error - no ips mapped = AVAILABLE
             if ( lookup.err === dns.NOTFOUND ){
-                console.log(string_LowerCaseDomainName + " resolved - available");
+                //console.log(string_LowerCaseDomainName + " resolved - available");
                 deferred.resolve();
             } else {
-                console.log(string_LowerCaseDomainName + " rejected - taken");
+                //console.log(string_LowerCaseDomainName + " rejected - taken");
                 deferred.reject();
             }
         });
