@@ -48,7 +48,7 @@ module.exports = {
         "cab"           : ["whois.donuts.co", "Domain not found."],
         "camera"        : ["whois.donuts.co", "Domain not found."],
         "camp"          : ["whois.donuts.co", "Domain not found."],
-        "captial"       : ["whois.donuts.co", "Domain not found."],
+        "capital"       : ["whois.donuts.co", "Domain not found."],
         "cards"         : ["whois.donuts.co", "Domain not found."],
         "careers"       : ["whois.donuts.co", "Domain not found."],
         "cat"           : ["whois.cat", "NOT FOUND."],
