@@ -51,8 +51,11 @@ module.exports = function Seeker() {
             //lookup.address = address;
             // lookup.family = family;
 
-            //console.log("error: " + lookup.err);
+            // console.log("error: " + lookup.err);
             // console.log("address: " + lookup.address);
+            if ( err != null && err.code != "ENOTFOUND" ){
+                console.log({"name": string_LowerCaseDomainName, "error": err});
+            }
 
             // if theres an error - no ips mapped = AVAILABLE
             if ( lookup.err === dns.NOTFOUND ){
@@ -60,7 +63,7 @@ module.exports = function Seeker() {
                 deferred.resolve();
             } else {
                 //console.log(string_LowerCaseDomainName + " rejected - taken");
-                deferred.reject();
+                deferred.reject(new Error("Something?"));
             }
         });
 
@@ -92,11 +95,13 @@ module.exports = function Seeker() {
                 var whoIsServer = whoIsData.registrars[tld][0],
                     notFoundString = whoIsData.registrars[tld][1]; // NOT FOUND IS GOOD :D
             } else {
-                throw "TLD WHOIS Server not found";
+                //TODO: FIX ME!?!
+                deferred.reject(new Error("TLD WHOIS Server not found"));
             }
 
             socket.connect(43, whoIsServer);
             socket.write(out);
+            socket.write("?\r\n");
             socket.on('data', function (d) {
                 whoIsTextResponse += d.toString();
             });

@@ -348,6 +348,6 @@ module.exports = {
         "yt"            : ["whois.nic.yt", "No entries found in the AFNIC Database."],
         "ryukyu"        : ["whois.nic.ryukyu", "DOMAIN NOT FOUND"],
         "zm"            : ["whois.nic.zm", "Domain Status: No Object Found"],
-        "zone"          : ["whois.donuts.co", "Domain not found."]
+        "zone"          : ["whois.donuts.co", "Domain not found."],
     }
 };

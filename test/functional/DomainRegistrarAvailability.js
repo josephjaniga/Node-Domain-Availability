@@ -8,7 +8,6 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     /**
      * RUN EACH registrar for a sample hit
      */
-
     var s = new Seeker();
 
     /**
@@ -106,4 +105,22 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it("CX",            function(){ s.isAvailable("google.cx").should.eventually.match(/(true|false)/); });
     it("CZ",            function(){ s.isAvailable("google.cz").should.eventually.match(/(true|false)/); });
 
+});
+
+describe("WhoIsData - Bad Registrar Negative Tests: ",function(){
+   
+    var s = new Seeker();
+    
+    /**
+     * THIS IS A BAD WHOIS SERVER - it should throw
+     */
+     
+    // MOCK / INJECT bad whois data for testing
+    s.whoIsData = {
+        "SomeFakeWHOIS" : ["whois.1234.abc", "Domain not found."] // INTENTIONAL FAKE BROKEN FOR TESTING
+    };
+
+     
+    it("SomeFakeWHOIS", function(){ s.isAvailable("google.SomeFakeWHOIS").should.eventually.throw("TLD WHOIS Server not found"); });
+ 
 });

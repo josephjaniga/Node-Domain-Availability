@@ -7,7 +7,7 @@ describe("Seeker - Single Domain Tests: ", function(){
 
     var s = new Seeker();
 
-    // negative tests... these domains should not be available
+    // Negative tests... these domains should not be available
     it("Travis-CI.org availability promise should return false", function(){
         s.isAvailable("travis-ci.org").should.eventually.equal(false);
     });
@@ -24,7 +24,7 @@ describe("Seeker - Single Domain Tests: ", function(){
         s.isAvailable("comcast.net").should.eventually.equal(false);
     });
 
-    // positive tests... these domains should be available
+    // Positive tests... these domains should be available
     it("RedHotLizardCaltrops.ninja availability promise should return true", function(){
         s.isAvailable("RedHotLizardCaltrops.ninja").should.eventually.equal(true);
     });
