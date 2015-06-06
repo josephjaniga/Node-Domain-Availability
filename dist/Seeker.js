@@ -27,6 +27,11 @@ socket._maxListeners = 0;
 module.exports = function Seeker() {
     "use strict";
 
+    var responseObject = {
+        completedSteps: [],
+        errors: []
+    };
+
     this.whoIsData = whoIsData.registrars;
 
     this.checkHostnameResolution = function( string_LowerCaseDomainName ){
@@ -42,17 +47,16 @@ module.exports = function Seeker() {
             "family": null
         };
 
+        responseObject.domain = string_LowerCaseDomainName;
+
         var deferred = q.defer();
 
-        //dns.lookup(string_LowerCaseDomainName, 4, function(err, address, family){
         dns.resolve4(string_LowerCaseDomainName, function(err, address){
 
             lookup.err = err;
             //lookup.address = address;
             // lookup.family = family;
 
-            // console.log("error: " + lookup.err);
-            // console.log("address: " + lookup.address);
             if ( err != null && err.code != "ENOTFOUND" ){
                 console.log({"name": string_LowerCaseDomainName, "error": err});
             }
@@ -60,15 +64,24 @@ module.exports = function Seeker() {
             // if theres an error - no ips mapped = AVAILABLE
             if ( lookup.err === dns.NOTFOUND ){
                 //console.log(string_LowerCaseDomainName + " resolved - available");
+                responseObject.hostnameResolution = false;
                 deferred.resolve();
             } else {
                 //console.log(string_LowerCaseDomainName + " rejected - taken");
-                deferred.reject(new Error("Something?"));
+                responseObject.hostnameResolution = true;
+                deferred.reject(new Error("Hostname Resolved to IP Address"));
             }
         });
 
-        var available   = function(){ return true; },
-            taken       = function(){ return false; };
+        var available   = function(){
+                responseObject.completedSteps.push("Hostname Resolution Check");
+                return true;
+            },
+            taken       = function(e){
+                responseObject.completedSteps.push("Hostname Resolution Check");
+                responseObject.errors.push(e.message);
+                return false;
+            };
 
         return deferred.promise.then(available, taken);
 
@@ -76,6 +89,7 @@ module.exports = function Seeker() {
 
     this.getTLD = function( string_LowerCaseDomainName ){
         var split = string_LowerCaseDomainName.split(".");
+        responseObject.completedSteps.push("Ascertain TLD");
         return split[split.length-1];
     };
 
@@ -92,53 +106,87 @@ module.exports = function Seeker() {
             tld = this.getTLD(lowercaseDomainName);
 
             if (tld in this.whoIsData) {
+
+                responseObject.completedSteps.push("TLD Validated");
+
                 var whoIsServer = whoIsData.registrars[tld][0],
                     notFoundString = whoIsData.registrars[tld][1]; // NOT FOUND IS GOOD :D
+
+                socket.connect(43, whoIsServer);
+                socket.write(out);
+                //socket.write("?\r\n");
+                socket.on('data', function (d) {
+                    whoIsTextResponse += d.toString();
+                });
+                socket.on('close', function(){
+                    // resolve a promise
+                    responseObject.whoIsTestResponse = whoIsTextResponse;
+                    responseObject.notFoundString = notFoundString;
+                    responseObject.completedSteps.push("WHOIS Lookup Performed");
+                    deferred.resolve([whoIsTextResponse, notFoundString]);
+                });
+
             } else {
                 //TODO: FIX ME!?!
-                deferred.reject(new Error("TLD WHOIS Server not found"));
+                responseObject.errors.push("Unable to check domain availability.");
+                deferred.reject(new Error("INVALID TLD - WHOIS Server for: '"+ tld +"' not found"));
             }
 
-            socket.connect(43, whoIsServer);
-            socket.write(out);
-            socket.write("?\r\n");
-            socket.on('data', function (d) {
-                whoIsTextResponse += d.toString();
-            });
-            socket.on('close', function(){
-                // resolve a promise
-                deferred.resolve([whoIsTextResponse, notFoundString]);
-            });
 
         } else {
             // hostname maps to an IP address
-            setTimeout(function(){
-                deferred.reject("hostname mapped to ip address");
-            }, 100);
+            deferred.reject(new Error("Hostname mapped to existing ip address"));
         }
 
         // either way return the promise
         return deferred.promise.then(this.resolve, this.reject);
     };
 
+    /**
+     * TODO:
+     * Where do these fit in?
+     */
+
     this.resolve = function(responseArray){
         var response = responseArray[0],
             notFoundString = responseArray[1];
         if ( !response.includes(notFoundString) ){
-            return false;
+            responseObject.whoIsAvailability = false;
+            responseObject.available = false;
         } else {
-            /* NOT FOUND MEANS: _ _       _     _      _
-             ...../\            (_) |     | |   | |    | |
-             ..../  \__   ____ _ _| | __ _| |__ | | ___| |
-             .../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
-             ../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
-             ./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
-            return true;
+
+            responseObject.whoIsAvailability = true;
+
+            if ( responseObject.hostnameResolution ){
+                responseObject.errors.push("Hostname Resolved when WhoIs could not find domain.");
+                responseObject.errors.push("WARNING - This domain may be locked or in a limbo state.");
+                responseObject.available = false;
+            } else {
+                /* NOT FOUND MEANS:  _ _       _     _      _
+                 ...../\            (_) |     | |   | |    | |
+                 ..../  \__   ____ _ _| | __ _| |__ | | ___| |
+                 .../ /\ \ \ / / _` | | |/ _` | '_ \| |/ _ \ |
+                 ../ ____ \ V / (_| | | | (_| | |_) | |  __/_|
+                 ./_/    \_\_/ \__,_|_|_|\__,_|_.__/|_|\___(*/
+                responseObject.available = true;
+            }
         }
+        return responseObject;
     };
 
-    this.reject = function(error){
-        return false;
+    this.reject = function(e){
+
+        try {
+            throw e;
+        }
+        catch(e) {
+            console.log(e);
+            responseObject.errors.push(e.message);
+        }
+
+        return responseObject;
     };
+
+
 
 };

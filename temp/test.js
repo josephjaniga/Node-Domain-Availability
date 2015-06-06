@@ -1,6 +1,6 @@
 var socket = require('net').Socket(),
     fs = require('fs'),
-    whoIsData   = require('./WhoIsData.js'),
+    whoIsData   = require('./../dist/WhoIsData.js'),
     whoIsTextResponse = '';
 
     //socket.connect(43, "whois.nic.it");
@@ -23,11 +23,11 @@ var socket = require('net').Socket(),
     //});
 
 
-// write tests for all whois dns registrars
-//for ( var key in whoIsData.registrars ){
-//    fs.appendFile(
-//        "./dist/out.txt",
-//        "it('"+key+"',            function(){ s.isAvailable('google."+key+"').should.eventually.match(/(true|false)/); });\r\n",
-//        function(err) { if(err){ return console.log(err); } }
-//    );
-//}
+    // write tests for all whois dns registrars
+    //for ( var key in whoIsData.registrars ){
+    //    fs.appendFile(
+    //        "./dist/out.txt",
+    //        "it('"+key+"',            function(){ s.isAvailable('google."+key+"').should.eventually.match(/(true|false)/); });\r\n",
+    //        function(err) { if(err){ return console.log(err); } }
+    //    );
+    //}

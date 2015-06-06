@@ -10,6 +10,7 @@
     "url": "https://github.com/josephjaniga/Node-Domain-Availability.git"
   },
   "dependencies": {
+    "express": "^4.12.4",
     "hostbyname": "^0.1.0",
     "q": "^1.4.1"
   },

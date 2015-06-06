@@ -63,6 +63,8 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it("BUILDERS",      function(){ s.isAvailable("google.builders").should.eventually.match(/(true|false)/); });
     it("BW",            function(){ s.isAvailable("google.bw").should.eventually.match(/(true|false)/); });
     it("BY",            function(){ s.isAvailable("google.by").should.eventually.match(/(true|false)/); });
+    it('black',         function(){ s.isAvailable('google.black').should.eventually.match(/(true|false)/); });
+    it('blue',          function(){ s.isAvailable('google.blue').should.eventually.match(/(true|false)/); });
 
     /**
      * C
@@ -187,6 +189,7 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('ir',            function(){ s.isAvailable('google.ir').should.eventually.match(/(true|false)/); });
     it('is',            function(){ s.isAvailable('google.is').should.eventually.match(/(true|false)/); });
     it('it',            function(){ s.isAvailable('google.it').should.eventually.match(/(true|false)/); });
+    it('info',            function(){ s.isAvailable('google.info').should.eventually.match(/(true|false)/); });
 
     it('je',            function(){ s.isAvailable('google.je').should.eventually.match(/(true|false)/); });
     it('jobs',            function(){ s.isAvailable('google.jobs').should.eventually.match(/(true|false)/); });
@@ -201,6 +204,7 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('koeln',            function(){ s.isAvailable('google.koeln').should.eventually.match(/(true|false)/); });
     it('kr',            function(){ s.isAvailable('google.kr').should.eventually.match(/(true|false)/); });
     it('kz',            function(){ s.isAvailable('google.kz').should.eventually.match(/(true|false)/); });
+    it('kim',            function(){ s.isAvailable('google.kim').should.eventually.match(/(true|false)/); });
 
     it('la',            function(){ s.isAvailable('google.la').should.eventually.match(/(true|false)/); });
     it('land',            function(){ s.isAvailable('google.land').should.eventually.match(/(true|false)/); });
@@ -275,6 +279,7 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('pt',            function(){ s.isAvailable('google.pt').should.eventually.match(/(true|false)/); });
     it('pub',            function(){ s.isAvailable('google.pub').should.eventually.match(/(true|false)/); });
     it('pw',            function(){ s.isAvailable('google.pw').should.eventually.match(/(true|false)/); });
+    it('pink',            function(){ s.isAvailable('google.pink').should.eventually.match(/(true|false)/); });
 
     it('qa',            function(){ s.isAvailable('google.qa').should.eventually.match(/(true|false)/); });
     it('quebec',            function(){ s.isAvailable('google.quebec').should.eventually.match(/(true|false)/); });
@@ -294,6 +299,7 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('rs',            function(){ s.isAvailable('google.rs').should.eventually.match(/(true|false)/); });
     it('ru',            function(){ s.isAvailable('google.ru').should.eventually.match(/(true|false)/); });
     it('ruhr',            function(){ s.isAvailable('google.ruhr').should.eventually.match(/(true|false)/); });
+    it('red',            function(){ s.isAvailable('google.red').should.eventually.match(/(true|false)/); });
 
     it('sa',            function(){ s.isAvailable('google.sa').should.eventually.match(/(true|false)/); });
     it('saarland',            function(){ s.isAvailable('google.saarland').should.eventually.match(/(true|false)/); });
@@ -323,6 +329,7 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('sx',            function(){ s.isAvailable('google.sx').should.eventually.match(/(true|false)/); });
     it('sy',            function(){ s.isAvailable('google.sy').should.eventually.match(/(true|false)/); });
     it('systems',            function(){ s.isAvailable('google.systems').should.eventually.match(/(true|false)/); });
+    it('shiksha',            function(){ s.isAvailable('google.shiksha').should.eventually.match(/(true|false)/); });
 
     it('tattoo',            function(){ s.isAvailable('google.tattoo').should.eventually.match(/(true|false)/); });
     it('tc',            function(){ s.isAvailable('google.tc').should.eventually.match(/(true|false)/); });
@@ -346,8 +353,8 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('travel',            function(){ s.isAvailable('google.travel').should.eventually.match(/(true|false)/); });
     it('tv',            function(){ s.isAvailable('google.tv').should.eventually.match(/(true|false)/); });
     it('tw',            function(){ s.isAvailable('google.tw').should.eventually.match(/(true|false)/); });
-    it('tz',            function(){ s.isAvailable('google.tz').should.eventually.match(/(true|false)/); });
 
+    it('tz',            function(){ s.isAvailable('google.tz').should.eventually.match(/(true|false)/); });
     it('ua',            function(){ s.isAvailable('google.ua').should.eventually.match(/(true|false)/); });
     it('ug',            function(){ s.isAvailable('google.ug').should.eventually.match(/(true|false)/); });
     it('university',            function(){ s.isAvailable('google.university').should.eventually.match(/(true|false)/); });
@@ -355,20 +362,11 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('uk',            function(){ s.isAvailable('google.uk').should.eventually.match(/(true|false)/); });
     it('uy',            function(){ s.isAvailable('google.uy').should.eventually.match(/(true|false)/); });
 
-    it('black',            function(){ s.isAvailable('google.black').should.eventually.match(/(true|false)/); });
-    it('blue',            function(){ s.isAvailable('google.blue').should.eventually.match(/(true|false)/); });
-    it('info',            function(){ s.isAvailable('google.info').should.eventually.match(/(true|false)/); });
-    it('kim',            function(){ s.isAvailable('google.kim').should.eventually.match(/(true|false)/); });
-    it('pink',            function(){ s.isAvailable('google.pink').should.eventually.match(/(true|false)/); });
-    it('red',            function(){ s.isAvailable('google.red').should.eventually.match(/(true|false)/); });
-    it('shiksha',            function(){ s.isAvailable('google.shiksha').should.eventually.match(/(true|false)/); });
     it('uz',            function(){ s.isAvailable('google.uz').should.eventually.match(/(true|false)/); });
-    it('vacations',            function(){ s.isAvailable('google.vacations').should.eventually.match(/(true|false)/); });
     it('vc',            function(){ s.isAvailable('google.vc').should.eventually.match(/(true|false)/); });
     it('ve',            function(){ s.isAvailable('google.ve').should.eventually.match(/(true|false)/); });
     it('vegas',            function(){ s.isAvailable('google.vegas').should.eventually.match(/(true|false)/); });
     it('ventures',            function(){ s.isAvailable('google.ventures').should.eventually.match(/(true|false)/); });
-    it('vg',            function(){ s.isAvailable('google.vg').should.eventually.match(/(true|false)/); });
     it('viajes',            function(){ s.isAvailable('google.viajes').should.eventually.match(/(true|false)/); });
     it('villas',            function(){ s.isAvailable('google.villas').should.eventually.match(/(true|false)/); });
     it('vision',            function(){ s.isAvailable('google.vision').should.eventually.match(/(true|false)/); });
@@ -376,6 +374,10 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('voting',            function(){ s.isAvailable('google.voting').should.eventually.match(/(true|false)/); });
     it('voyage',            function(){ s.isAvailable('google.voyage').should.eventually.match(/(true|false)/); });
     it('vu',            function(){ s.isAvailable('google.vu').should.eventually.match(/(true|false)/); });
+    it('vg',            function(){ s.isAvailable('google.vg').should.eventually.match(/(true|false)/); });
+    it('vacations',            function(){ s.isAvailable('google.vacations').should.eventually.match(/(true|false)/); });
+
+    it('ryukyu',            function(){ s.isAvailable('google.ryukyu').should.eventually.match(/(true|false)/); });
     it('wang',            function(){ s.isAvailable('google.wang').should.eventually.match(/(true|false)/); });
     it('watch',            function(){ s.isAvailable('google.watch').should.eventually.match(/(true|false)/); });
     it('wed',            function(){ s.isAvailable('google.wed').should.eventually.match(/(true|false)/); });
@@ -384,10 +386,12 @@ describe("WhoIsData - Registrar Accuracy Tests: ", function(){
     it('wiki',            function(){ s.isAvailable('google.wiki').should.eventually.match(/(true|false)/); });
     it('works',            function(){ s.isAvailable('google.works').should.eventually.match(/(true|false)/); });
     it('ws',            function(){ s.isAvailable('google.ws').should.eventually.match(/(true|false)/); });
+
     it('xxx',            function(){ s.isAvailable('google.xxx').should.eventually.match(/(true|false)/); });
     it('xyz',            function(){ s.isAvailable('google.xyz').should.eventually.match(/(true|false)/); });
+
     it('yt',            function(){ s.isAvailable('google.yt').should.eventually.match(/(true|false)/); });
-    it('ryukyu',            function(){ s.isAvailable('google.ryukyu').should.eventually.match(/(true|false)/); });
+
     it('zm',            function(){ s.isAvailable('google.zm').should.eventually.match(/(true|false)/); });
     it('zone',            function(){ s.isAvailable('google.zone').should.eventually.match(/(true|false)/); });
 
