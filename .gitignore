@@ -45,3 +45,5 @@ npm-debug.log
 
 # istanbul code coverage reports
 coverage/
+
+temp/*.log
