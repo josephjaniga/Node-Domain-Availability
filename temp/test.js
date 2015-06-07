@@ -1,6 +1,7 @@
 var socket = require('net').Socket(),
     fs = require('fs'),
     whoIsData   = require('./../dist/WhoIsData.js'),
+    Seeker   = require('./../dist/Seeker.js'),
     whoIsTextResponse = '';
 
     //socket.connect(43, "whois.nic.it");
@@ -31,3 +32,12 @@ var socket = require('net').Socket(),
     //        function(err) { if(err){ return console.log(err); } }
     //    );
     //}
+
+var s = new Seeker(),
+    out = s.isAvailable("pizza.ninja");
+
+console.log(out.inspect());
+
+setTimeout(function(){
+    console.log(out.inspect());
+}, 500);

@@ -41,50 +41,86 @@ module.exports = function Seeker() {
          *                              - taken = return false = NO
          */
 
-        var lookup = {
-            "err": null,
-            "address": null,
-            "family": null
-        };
+        var records = [
+                {type:'A',      results:null, deferred:q.defer(), err:null},
+                {type:'AAAA',   results:null, deferred:q.defer(), err:null},
+                {type:'MX',     results:null, deferred:q.defer(), err:null},
+                {type:'TXT',    results:null, deferred:q.defer(), err:null},
+                {type:'SRV',    results:null, deferred:q.defer(), err:null},
+                //{type:'PTR',  results:null, deferred:q.defer(), err:null},
+                {type:'NS',     results:null, deferred:q.defer(), err:null},
+                {type:'CNAME',  results:null, deferred:q.defer(), err:null},
+                //{type:'SOA',  results:null, deferred:q.defer(), err:null},
+            ],
+            vows = [];
 
         responseObject.domain = string_LowerCaseDomainName;
 
-        var deferred = q.defer();
+        records.forEach(function(element, index, array){
 
-        dns.resolve4(string_LowerCaseDomainName, function(err, address){
+            dns.resolve(string_LowerCaseDomainName, element.type, function(err, addresses){
 
-            lookup.err = err;
-            //lookup.address = address;
-            // lookup.family = family;
+                element.results = addresses;
+                element.err = err;
 
-            if ( err != null && err.code != "ENOTFOUND" ){
-                console.log({"name": string_LowerCaseDomainName, "error": err});
-            }
+                if ( err != null && err.code != "ENOTFOUND" ){
+                    // TODO: HANDLE THESE ERRORS
+                    //console.log({"name": string_LowerCaseDomainName, "error": err});
+                }
 
-            // if theres an error - no ips mapped = AVAILABLE
-            if ( lookup.err === dns.NOTFOUND ){
-                //console.log(string_LowerCaseDomainName + " resolved - available");
-                responseObject.hostnameResolution = false;
-                deferred.resolve();
-            } else {
-                //console.log(string_LowerCaseDomainName + " rejected - taken");
-                responseObject.hostnameResolution = true;
-                deferred.reject(new Error("Hostname Resolved to IP Address"));
-            }
+                // if theres an error - no ips mapped = AVAILABLE
+                if ( element.err === dns.NOTFOUND || ( element.results != null && element.results.length == 0 ) ){
+                    element.deferred.resolve();
+                } else {
+
+                    if ( element.results ){
+
+                        if ( element.type == "MX" ){
+                            var tempMXResults = [];
+                            for ( var el in element.results ){
+                                tempMXResults.push(element.results[el].priority + " - " + element.results[el].exchange);
+                            }
+                            responseObject.errors.push("[DNS] " + element.type + " Records Found: " + tempMXResults);
+                        } else {
+                            responseObject.errors.push("[DNS] " + element.type + " Records Found: " + element.results);
+                        }
+
+                        element.deferred.reject(new Error("WARNING: DNS Records Found."));
+                    } else {
+                        element.deferred.resolve();
+                    }
+                }
+            });
+
+            // process this promise and add it to the list
+            vows.push(element.deferred.promise.then(available, taken));
+
         });
 
-        var available   = function(){
-                responseObject.completedSteps.push("Hostname Resolution Check");
-                return true;
-            },
+        var available   = function(){return true;},
             taken       = function(e){
-                responseObject.completedSteps.push("Hostname Resolution Check");
-                responseObject.errors.push(e.message);
                 return false;
             };
 
-        return deferred.promise.then(available, taken);
+        // if all the promises resolve were good, if one fails we reject
+        return q.all(vows).then(
+            function(){
+                responseObject.completedSteps.push("Hostname Resolution Check");
+                responseObject.completedSteps.push("No DNS Records Found.");
+                responseObject.hostnameResolution = false;
+                return true;
+            },
+            function(e){
+                responseObject.errors.push(e.message);
+                responseObject.completedSteps.push("Hostname Resolution Check");
+                //responseObject.completedSteps.push("WARNING: DNS Records Found.");
+                responseObject.hostnameResolution = true;
+                return false;
+            }
+        );
 
+        // THE OLD WAY
+        //return deferred.promise.then(available, taken);
     };
 
     this.getTLD = function( string_LowerCaseDomainName ){
