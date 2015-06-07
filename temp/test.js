@@ -1,5 +1,6 @@
 var socket = require('net').Socket(),
     fs = require('fs'),
+    http = require('http'),
     whoIsData   = require('./../dist/WhoIsData.js'),
     Seeker   = require('./../dist/Seeker.js'),
     whoIsTextResponse = '';
@@ -33,11 +34,36 @@ var socket = require('net').Socket(),
     //    );
     //}
 
-var s = new Seeker(),
-    out = s.isAvailable("pizza.ninja");
+    // testing
 
-console.log(out.inspect());
+    //var s = new Seeker(),
+    //    out = s.isAvailable("pizza.ninja");
+    //
+    //console.log(out.inspect());
+    //
+    //setTimeout(function(){
+    //    console.log(out.inspect());
+    //}, 500);
 
-setTimeout(function(){
-    console.log(out.inspect());
-}, 500);
+/**
+ * GET A FULL ARRAY OF ALL TLDS - active and pending
+ */
+
+http.get('http://data.iana.org/TLD/tlds-alpha-by-domain.txt', function(res){
+    res.setEncoding('utf8');
+    var body = "",
+        processed = null;
+    res.on('data', function (chunk) {
+        body += chunk;
+    });
+    res.on('end', function(){
+        processed = body.split("\n");
+        for ( var i =0; i<processed.length; i++ ){
+            if ( processed[i].indexOf(" ") > -1 || processed[i] == "" ) {
+                processed.splice(i, 1);
+            }
+        }
+        console.log(processed.length);
+    });
+});
+

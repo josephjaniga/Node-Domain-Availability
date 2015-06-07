@@ -1,5 +1,14 @@
 "use strict";
 
+// http://www.iana.org/whois?q=com
+// can make whois requests for TLDS and retreive their TLD whois data
+
+// http://www.iana.org/domains/root/db
+// the "FULL LIST"
+
+// FULL LIST in TXT
+// http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+
 module.exports = {
     "registrars": {
         "com"           : ["whois.verisign-grs.com", "No match for "],
@@ -8,6 +17,7 @@ module.exports = {
         "co.uk"         : ["whois.nic.uk", "No match for "],
         "io"            : ["whois.nic.io", "is available for purchase"],
         "computer"      : ["whois.donuts.co", "Domain not found."],
+        "abbot"         : ["whois.afilias-srs.net", "Domain not found."],  // CONFIRM
         "ac"            : ["whois.nic.ac", "is available for purchase"],
         "academy"       : ["whois.donuts.co", "Domain not found."],
         "actor"         : ["whois.unitedtld.com", "Domain not found."],
@@ -341,6 +351,7 @@ module.exports = {
         "wf"            : ["whois.nic.wf", "No entries found in the AFNIC Database."],
         "wien"          : ["whois.nic.wien", "No match"],
         "wiki"          : ["whois.nic.wiki", "DOMAIN NOT FOUND"],
+        "wtf"           : ["whois.donuts.co", "Domain not found."],
         "works"         : ["whois.donuts.co", "Domain not found."],
         "ws"            : ["whois.website.ws", "No match for"],
         "xxx"           : ["whois.nic.xxx", "NOT FOUND"],
