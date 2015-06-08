@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Bad.Management</title>
 
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
 
     <script>
@@ -26,18 +27,101 @@
             }]);
     </script>
 
+    <style>
+        #search_bar{
+            padding:4px 10px;
+            font-size:20px;
+            text-align:left;
+            height:30px;
+            width:600px;
+        }
+
+        #search_button{
+            padding:4px 10px;
+            font-size:20px;
+            text-align:center;
+            height:46px;
+        }
+    </style>
+
+    <script>
+        $(function(){
+            $("#search_bar").select();
+            $("#search_bar").focus(function(){$(this).select();});
+        });
+    </script>
+
 </head>
 <body>
 
 <section ng-controller="DomainSearchCtrl">
 
-    <h1>input</h1>
-    <input type="text" ng-model="domain"/> <button ng-click="checkAvailability(domain)">Check</button>
+    <form style="width:900px; margin:0 auto; text-align:center;">
+        <input id="search_bar" type="text" ng-model="domain" ng-submit="checkAvailability(domain)"/>
+        <button id="search_button" ng-click="checkAvailability(domain)">Search</button>
+    </form>
 
-    <h1>output</h1>
     <div>
-        {{ domain }}<br/>
-        <pre style="background:darkblue; color:lightyellow; padding:10px;">{{ result }}</pre>
+
+        <table>
+            <tr>
+                <th style="width:200px; text-align:left;">Domain</td>
+                <th style="text-align:left;">{{ result.domain }}</td>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>Available</td>
+                    <td>{{result.available.toString().toUpperCase()}}</td>
+                </tr>
+                <tr>
+                    <td>Hostname Resolution</td>
+                    <td>{{result.whoIsAvailability.toString().toUpperCase()}}</td>
+                </tr>
+                <tr>
+                    <td>WhoIs Availability</td>
+                    <td>{{result.hostnameResolution.toString().toUpperCase()}}</td>
+                </tr>
+                <tr>
+                    <td>Steps</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="step in result.completedSteps">
+                                <span>{{step}}</span>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Errors</td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="error in result.errors">
+                                <span>{{error}}</span>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>WhoIs</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Response</td>
+                    <td>
+                        <pre>
+                            {{result.whoIsTestResponse}}
+                        </pre>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Negative Search String</td>
+                    <td>{{result.notFoundString}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
     </div>
 
 </section>
