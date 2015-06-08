@@ -8,10 +8,6 @@ var express = require('express'),
 
 router.get('/:domain', function(req, res){
 
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-
     var s       = new Seeker(),
         domain  = req.params.domain || "google.com",
         promise  = s.isAvailable(domain);
@@ -28,10 +24,6 @@ router.get('/:domain', function(req, res){
 });
 
 tldrouter.get('/', function(req, response){
-
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
 
     /**
      * GET A FULL ARRAY OF ALL TLDS - active and pending
@@ -61,6 +53,14 @@ tldrouter.get('/', function(req, response){
 
 app.use('/api', router);
 app.use('/tld', tldrouter);
+
+app.all('/*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 app.listen(port);
 console.log('Magic happens on port '+ port);
