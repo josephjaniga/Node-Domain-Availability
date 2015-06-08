@@ -7,6 +7,11 @@ var express = require('express'),
     port    = 3333;
 
 router.get('/:domain', function(req, res){
+
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
     var s       = new Seeker(),
         domain  = req.params.domain || "google.com",
         promise  = s.isAvailable(domain);
@@ -23,6 +28,10 @@ router.get('/:domain', function(req, res){
 });
 
 tldrouter.get('/', function(req, response){
+
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
 
     /**
      * GET A FULL ARRAY OF ALL TLDS - active and pending
