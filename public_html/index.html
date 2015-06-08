@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="WhoIsApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Bad.Management</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+
+    <script>
+        angular.module('WhoIsApp', [])
+            .controller('DomainSearchCtrl', ['$scope', '$http', function($scope, $http){
+                var DomainSearch = this;
+
+                    $scope.domain = "google.com";
+                    $scope.result = {"completedSteps": "this is a test"};
+
+                    $scope.checkAvailability = function( domainName ){
+                        $http.get( 'http://bad.management:3333/api/'+domainName )
+                            .success(function(data, status, headers, config){
+                                console.log(status);
+                                    $scope.result = data;
+                            });
+                    };
+
+                    $scope.checkAvailability($scope.domain);
+            }]);
+    </script>
+
+</head>
+<body>
+
+<section ng-controller="DomainSearchCtrl">
+
+    <h1>input</h1>
+    <input type="text" ng-model="domain"/> <button ng-click="checkAvailability(domain)">Check</button>
+
+    <h1>output</h1>
+    <div>
+        {{ domain }}<br/>
+        <pre style="background:darkblue; color:lightyellow; padding:10px;">{{ result }}</pre>
+    </div>
+
+</section>
+
+</body>
+</html>
